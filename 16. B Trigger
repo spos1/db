@@ -1,0 +1,72 @@
+use company
+
+db.employee.insertOne({Empid:1,
+			Name:{FName:"Sahil",LName:"Naik"},
+			Company:"None", Salary:100,
+			Designation:"Programmer",
+			Age:21,
+			Expertise:["Helper","Senior"],
+			DOB:"26022002",
+			Emailid:"F_you@gmail.com",
+			Contact:"469369",
+			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+
+db.employee.insertOne({Empid:2,
+			Name:{FName:"Kon",LName:"Joe"},
+			Company:"TCS", Salary:12000,
+			Designation:"Programmer",
+			Age:26,
+			Expertise:["Artist","Senior"],
+			DOB:"02071997",
+			Emailid:"F_you2@gmail.com",
+			Contact:"4693692",
+			Address:{Paddr:{City:"Pune",Pin_code:"411002"}, Laddr:{City:"Pune",Pin_code:"411003"}}})
+			
+db.employee.insertOne({Empid:3,
+			Name:{FName:"Ron",LName:"Kamble"},
+			Company:"DHL", Salary:19000,
+			Designation:"Programmer",
+			Age:21,
+			Expertise:["Helper","Junior"],
+			DOB:"17112002",
+			Emailid:"F_you3@gmail.com",
+			Contact:"46541",
+			Address:{Paddr:{City:"Mumbai",Pin_code:"401001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+			
+db.employee.insertOne({Empid:4,
+			Name:{FName:"John",LName:"John"},
+			Company:"TCS", Salary:25000,
+			Designation:"Designer",
+			Age:25,
+			Expertise:["Helper","Senior"],
+			DOB:"23011998",
+			Emailid:"F_you4@gmail.com",
+			Contact:"68415",
+			Address:{Paddr:{City:"Goa",Pin_code:"405001"}, Laddr:{City:"Mumbai",Pin_code:"401003"}}})
+			
+db.employee.insertOne({Empid:5,
+			Name:{FName:"Lol",LName:"Lmao"},
+			Company:"DHL", Salary:9000,
+			Designation:"Tester",
+			Age:21,
+			Expertise:["SQL","Senior"],
+			DOB:"11112002",
+			Emailid:"F_you5@gmail.com",
+			Contact:"744612",
+			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
+      
+      
+
+#Q1. Return the Total Salary of per Company
+db.employee.mapReduce(function() {emit(this.Company,this.Salary)}, function(company,salary){return Array.sum(salary)},{out:'test'})
+
+
+#Q2. Return the Total Salary of Company Name:"TCS"
+db.employee.aggregate([{$group:{_id:'$Company',T_Salary:{$sum:'$Salary'}}}])
+
+
+#Q3. Return the Avg Salary of Company whose address is “Pune".
+
+
+
+#Q4. Return total count for “State=AP”
