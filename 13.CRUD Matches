@@ -1,0 +1,58 @@
+use company
+
+db.Employee.insert({empid : 101,Name : {Fname : "Nick ", Lname: "R"},
+				company_name : "TCS",
+				Salary : 100000,
+				Designation : "Programmer",
+				Age : 21,
+				Expertise : ["Mongodb","MySQL","Cassendra"],
+				DOB : 16/04/2002,
+				EmailID : "abc@gmail.com",
+				Contact : "364314363",
+				Address : [{Paddr : "sjfgajsf"},
+				{Laddr : "ksjghjssgcv"}]})
+        
+        
+db.Employee.insert({empid : 102,
+                    Name : {Fname : "Ron", Lname: "John"},
+                    company_name : "Infosys",
+                    Salary : 200000,
+                    Designation : "Developer",
+                    Age : 20,
+                    Expertise : ["Mongodb","MySQL","Cassendra"],
+                    DOB : 20/10/2002,
+                    EmailID : "abcde@gmail.com",
+                    Contact : "3643147683",
+                    Address : [{Paddr : "sjjsf"},
+                    {Laddr : "kssgcv"}]})
+		    
+  
+#Q1. Select all documents where the Designation field has the value "Programmer" 
+and the value of the salary field is greater than 30000.
+db.Employee.find({Designation : "Programmer" , Salary : {$gt : 30000}})
+
+
+#Q2. Creates a new document if no document in the employee collection contains
+{Designation: "Tester", Company_name: "TCS", Age: 25}.
+db.Employee.findAndModify({query : {Designation : "Tester" ,
+                                    Company_name : "TCS",
+                                    Age : 25},
+                                    update : {$set:{Designation : "Tester" ,Company_name : "TCS", Age : 25}},
+                                    upsert : true})
+                                    
+                                    
+#Q3. Matches all documents where the value of the field Address is an embedded document that contains only the field city
+with the value "Pune" and the field Pin_code with the value "411001".
+
+
+
+#Q4. Finds all documents with Company_name: "TCS" and modifies their salary field by 2000.
+db.Employee.updateMany({Company_name : "TCS"},{$inc:{Salary : 2000}})
+
+
+#Q5. Find documents where Designation is not equal to "Developer".
+db.Employee.find({Designation : {$ne : "Developer"}})
+
+
+#Q6. Find all document with Exact Match on an Array ['Mongodb','Mysql', 'Cassandra'].
+db.Employee.find({Expertise : ["Mongodb","MySQL","Cassendra"]})
