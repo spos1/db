@@ -1,0 +1,42 @@
+CREATE TABLE Companies(comp_id VARCHAR(20), name VARCHAR(20), cost INT, year VARCHAR(10));
+CREATE TABLE Orders(comp_id VARCHAR(20), domain VARCHAR(20), quantity INT);
+
+INSERT INTO Companies VALUES('C001','ONGC',2000,'2010');
+INSERT INTO Companies VALUES('C002','HPCL',2500,'2012');
+INSERT INTO Companies VALUES('C005','IOCL',1000,'2014');
+INSERT INTO Companies VALUES('C006','BHEL',3000,'2015');
+
+INSERT INTO Orders VALUES('C001','Oil',109);
+INSERT INTO Orders VALUES('C002','Gas',121);
+INSERT INTO Orders VALUES('C007','Telecom',115);
+INSERT INTO Orders VALUES('C008','IT',141);
+
+-- Companies(comp_id,name,cost,year)    -> (var,var,int,var)
+-- Orders(comp_id,domain,quantity) -> (var,var,int)
+
+
+#Q1. Find names, costs, domains and quantities for companies using inner join.
+SELECT Companies.cost, Orders.domain, Orders.quantity FROM Companies INNER JOIN Orders ON Companies.comp_id = Orders.comp_id;
+
+
+#Q2. Find names, costs, domains and quantities for companies using left outer join.
+SELECT Companies.cost, Orders.domain, Orders.quantity FROM Companies LEFT OUTER JOIN Orders ON Companies.comp_id = Orders.comp_id;
+
+
+#Q3.Find names, costs, domains and quantities for companies using right outer join.
+SELECT Companies.cost, Orders.domain, Orders.quantity FROM Companies RIGHT OUTER JOIN Orders ON Companies.comp_id = Orders.comp_id;
+
+
+#Q4. Find names, costs, domains and quantities for companies using Union operator.
+SELECT comp_id,cost FROM Companies
+UNION
+SELECT domain,quantity FROM Orders;
+
+
+#Q5. Create View View1 by selecting both tables to show company name and quantities.
+CREATE VIEW Comp_name AS
+SELECT Companies.name, Orders.quantity FROM Companies FULL OUTER JOIN Orders on Orders.comp_id=Companies.comp_id;
+
+
+#Q6. Display content of View1.
+SELECT * FROM Comp_name;
