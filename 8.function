@@ -1,0 +1,36 @@
+CREATE TABLE Student(Marks number(20) not null, Grade varchar(20));
+    
+CREATE OR REPLACE FUNCTION check_grade(student_marks IN number)
+RETURN varchar IS
+student_grade varchar(20);
+BEGIN
+    IF student_marks<=1500 and student_marks>=990 THEN
+        student_grade := 'DISTINCTION';
+        RETURN student_grade;
+        
+    ELSIF student_marks<=989 and student_marks>=900 THEN
+        student_grade := 'FIRST CLASS';
+        RETURN student_grade;
+        
+    ELSIF student_marks<=899 and student_marks>=825 THEN
+        student_grade := 'HIGHER SECOND CLASS';
+        RETURN student_grade;
+        
+    ELSE
+        student_grade := 'SECOND CLASS';
+        RETURN student_grade;
+        
+    END IF;
+END;
+/
+
+DECLARE
+    Marks number;
+    student_grade varchar(20);
+
+BEGIN
+    Marks :=895;
+    student_grade := check_grade(Marks);
+    dbms_output.put_line('Student Grade is: '||student_grade);
+END;
+/
