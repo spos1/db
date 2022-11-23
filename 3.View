@@ -1,0 +1,114 @@
+CREATE TABLE Account(Acc_no VARCHAR(10) NOT NULL, branch_name VARCHAR(50), balance INT, PRIMARY KEY (Acc_no));
+CREATE TABLE Branch(branch_name VARCHAR(50) NOT NULL, branch_city VARCHAR(20), assets VARCHAR(10));
+CREATE TABLE Customer(cust_name VARCHAR(20) NOT NULL, cust_street VARCHAR(15), cust_city VARCHAR(10), PRIMARY KEY (cust_name));
+CREATE TABLE Depositor(cust_name VARCHAR(20) NOT NULL, acc_no VARCHAR(20), FOREIGN KEY (cust_name) REFERENCES Customer(cust_name));
+CREATE TABLE Loan(loan_no VARCHAR(20), branch_name VARCHAR(50) NOT NULL, amount INT, PRIMARY KEY (loan_no));
+CREATE TABLE Borrower(cust_name VARCHAR(20) NOT NULL, loan_no VARCHAR(20) NOT NULL, FOREIGN KEY (cust_name) REFERENCES Customer(cust_name), FOREIGN KEY (loan_no) REFERENCES Loan(loan_no));
+
+
+--Account(Acc_no, branch_name,balance)      -> (var, var, int)
+--Branch(branch_name,branch_city,assets)    -> (var, var, var)
+--Customer(cust_name,cust_street,cust_city) -> (var, var, var)
+--Depositor(cust_name,acc_no)               -> (var, var)
+--Loan(loan_no,branch_name,amount)          -> (var, var, int)
+--Borrower(cust_name,loan_no)               -> (var, var)
+
+# Test-1: (Customer_name: Sam, Branch_name: Pune_Station)
+
+INSERT INTO Account VALUES('1','Pune_Station',250);
+INSERT INTO Branch VALUES('Pune_Station','Pune','Gold');
+INSERT INTO Customer VALUES('Sam','Lane-1','Pune');
+INSERT INTO Depositor VALUES('Sam','1');
+INSERT INTO Loan VALUES('L1','Pune_Station',500);
+INSERT INTO Borrower VALUES('Sam','L1');
+
+# Test-2: (Customer_name: Ron, Branch_name: Akurdi)
+
+INSERT INTO Account VALUES('2','Akurdi',750);
+INSERT INTO Branch VALUES('Akurdi','Pune','Diamond');
+INSERT INTO Customer VALUES('Ron','Road-1','Pune');
+INSERT INTO Depositor VALUES('Ron','2');
+INSERT INTO Loan VALUES('L2','Akurdi',1500);
+INSERT INTO Borrower VALUES('Ron','L2');
+
+# Test-3: (Customer_name: Nilesh, Branch_name: Pune_Station)
+
+INSERT INTO Account VALUES('3','Pune_Station',1250);
+INSERT INTO Branch VALUES('Pune_Station','Pune','Car');
+INSERT INTO Customer VALUES('Nilesh','Road-C2','Pune');
+INSERT INTO Depositor VALUES('Nilesh','3');
+INSERT INTO Loan VALUES('L3','Pune_Station',1750);
+INSERT INTO Borrower VALUES('Nilesh','L3');
+
+# Test-4: (Customer_name: Rohan, Branch_name: Pune_Station)
+
+INSERT INTO Account VALUES('4','Pune_Station',900);
+INSERT INTO Branch VALUES('Pune_Station','Pune','Van');
+INSERT INTO Customer VALUES('Rohan','Street-P2','Mumbai');
+INSERT INTO Depositor VALUES('Rohan','4');
+INSERT INTO Loan VALUES('L4','Pune_Station',2000);
+INSERT INTO Borrower VALUES('Rohan','L4');
+
+# Test-5: (Customer_name: Alan, Branch_name: Akurdi)
+
+INSERT INTO Account VALUES('5','Akurdi',19000);
+INSERT INTO Branch VALUES('Akurdi','Pune','Bike');
+INSERT INTO Customer VALUES('Alan','Street-P6','Pune');
+INSERT INTO Depositor VALUES('Alan','5');
+INSERT INTO Loan VALUES('L5','Akurdi',22000);
+INSERT INTO Borrower VALUES('Alan','L5');
+
+#Q1. Create a View1 to display List all customers in alphabetical order who have loan from 
+Pune_Station branch.
+
+CREATE VIEW Pune_Station_Customers AS
+SELECT Depositor.cust_name FROM Depositor WHERE Depositor.acc_no IN (SELECT Account.Acc_no FROM Account WHERE Account.branch_name='Pune_Station') ORDER BY ASC;
+SELECT * FROM Pune_Station_Customers;
+
+
+#Q2. Create View2 on branch table by selecting any two columns and perform insert, update and delete operations.
+CREATE VIEW Branch_Table AS
+SELECT Branch.branch_name, Branch.branch_city FROM Branch;
+
+SELECT * FROM Branch_Table;
+
+INSERT INTO Branch_Table VALUES('New','New_City');
+SELECT * FROM Branch_Table;
+
+UPDATE Branch_Table SET branch_name='New_B' WHERE branch_city='New_City';
+SELECT * FROM Branch_Table;
+
+DELETE FROM Branch_Table WHERE branch_city='New_City';
+SELECT * FROM Branch_Table;
+
+
+#Q3. Create View3 on borrower and depositor table by selecting any one column from each table 
+perform insert update delete operations.
+CREATE VIEW Depo_Borro AS
+SELECT Depositor.acc_no, Borrower.loan_no FROM Depositor FULL OUTER JOIN Borrower on Depositor.cust_name=Borrower.cust_name;
+
+SELECT * FROM Depo_Borro;
+
+
+#Q4. Create Union of left and right joint for all customers who have an account or 
+loan or both at bank.
+SELECT Depositor.cust_name FROM Depositor
+UNION
+SELECT Borrower.cust_name FROM Borrower;
+
+#Q5. Display content of View1,View2,View3
+SELECT * FROM Pune_Station_Customers;
+SELECT * FROM Branch_Table;
+SELECT * FROM Depo_Borro;
+
+#Q6. Create simple and unique index.
+CREATE INDEX id_acc ON Account(Acc_no);
+CREATE UNIQUE INDEX id_loan ON Loan(loan_no);
+
+#Q7. Display index information.
+SHOW INDEX FROM database_name.table_name;
+
+#Q8. Truncate table Customer.
+SELECT * FROM Customer;
+TRUNCATE TABLE Customer;
+SELECT * FROM Customer;
