@@ -1,0 +1,29 @@
+CREATE TABLE Borrower(Roll_no VARCHAR(10), Date_of_Issue DATE, Name_of_Book VARCHAR(50), Status VARCHAR(20));
+CREATE TABLE Fine(Roll_no VARCHAR(10), Date_ DATE, Amt INT);
+
+INSERT INTO Borrower VALUES('1',DATE '2022-10-11','Book1','I');
+INSERT INTO Borrower VALUES('3',DATE '2022-09-25','Book2','I');
+
+DECLARE 
+    ldate DATE;
+    fine INT(20);
+    day INT(20);
+PROCEDURE book_fine(roll_no VARCHAR,Name_Book VARCHAR) IS
+BEGIN
+    SELECT Date_of_Issue into ldate FROM Borrower WHERE roll_no=Roll_no AND Name_Book=Name_of_Book;
+        day:=DATEDIFF(CURDATE(),ldate);
+    IF(day>=15 AND dat<=30) THEN
+        fine := day*5;
+    ELSIF(day>30) THEN
+        fine := day*50;
+    END IF;
+    UPDATE Borrower SET Status='R' WHERE Roll_no=roll_no and Name_Book=Name_of_Book;
+    IF(fine is not null) THEN
+        INSERT INTO Fine VALUES(roll_no, CURDATE(), fine);
+    END IF;
+END;
+
+BEGIN
+book_fine('1','Book1');
+END;
+/
