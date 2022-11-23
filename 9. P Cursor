@@ -1,0 +1,43 @@
+CREATE TABLE O_Roll(name varchar2(10), roll varchar(20));
+CREATE TABLE N_Roll(name varchar2(10), roll varchar(20));
+
+INSERT INTO O_Roll values ('A','1');
+INSERT INTO O_Roll values ('B','2');
+INSERT INTO O_Roll values ('C','3');
+INSERT INTO O_Roll values ('D','4');
+INSERT INTO O_Roll values ('E','5');
+
+INSERT INTO N_Roll values ('A','1');
+INSERT INTO N_Roll values ('C','3');
+
+SELECT * FROM O_Roll;
+SELECT * FROM N_Roll;
+
+DECLARE
+    CURSOR check_old(o_name varchar2,o_roll varchar) IS SELECT name, roll FROM O_Roll WHERE roll=o_roll;
+    CURSOR check_new is SELECT roll FROM N_Roll;
+    
+    old_r varchar(20);
+    name varchar(20);
+    new_r varchar(20);
+    
+BEGIN
+    OPEN check_old('D','4');
+    OPEN check_new;
+    
+    LOOP
+        FETCH check_old INTO name, old_r;
+        FETCH check_new INTO new_r;
+        EXIT WHEN check_old%found=false;
+        
+        IF new_r<>old_r THEN
+        INSERT INTO N_Roll VALUES(name, old_r);
+        END IF;
+    END LOOP;
+    CLOSE check_old;
+    CLOSE check_new;
+END;
+/
+
+SELECT * FROM O_Roll;
+SELECT * FROM N_Roll;
