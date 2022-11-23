@@ -1,13 +1,13 @@
 use company
 
 db.employee.insertOne({Empid:1,
-			Name:{FName:"Sahil",LName:"Naik"},
+			Name:{FName:"Ashok",LName:"Kale"},
 			Company:"None", Salary:100,
 			Designation:"Programmer",
 			Age:21,
 			Expertise:["Helper","Senior"],
 			DOB:"26022002",
-			Emailid:"F_you@gmail.com",
+			Emailid:"A_you@gmail.com",
 			Contact:"469369",
 			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
 
@@ -18,7 +18,7 @@ db.employee.insertOne({Empid:2,
 			Age:26,
 			Expertise:["Artist","Senior"],
 			DOB:"02071997",
-			Emailid:"F_you2@gmail.com",
+			Emailid:"K_you2@gmail.com",
 			Contact:"4693692",
 			Address:{Paddr:{City:"Pune",Pin_code:"411002"}, Laddr:{City:"Pune",Pin_code:"411003"}}})
 			
@@ -29,7 +29,7 @@ db.employee.insertOne({Empid:3,
 			Age:21,
 			Expertise:["Helper","Junior"],
 			DOB:"17112002",
-			Emailid:"F_you3@gmail.com",
+			Emailid:"R_you3@gmail.com",
 			Contact:"46541",
 			Address:{Paddr:{City:"Mumbai",Pin_code:"401001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
 			
@@ -40,7 +40,7 @@ db.employee.insertOne({Empid:4,
 			Age:25,
 			Expertise:["Helper","Senior"],
 			DOB:"23011998",
-			Emailid:"F_you4@gmail.com",
+			Emailid:"J_you4@gmail.com",
 			Contact:"68415",
 			Address:{Paddr:{City:"Goa",Pin_code:"405001"}, Laddr:{City:"Mumbai",Pin_code:"401003"}}})
 			
@@ -51,7 +51,7 @@ db.employee.insertOne({Empid:5,
 			Age:21,
 			Expertise:["SQL","Senior"],
 			DOB:"11112002",
-			Emailid:"F_you5@gmail.com",
+			Emailid:"L_you5@gmail.com",
 			Contact:"744612",
 			Address:{Paddr:{City:"Pune",Pin_code:"411001"}, Laddr:{City:"Pune",Pin_code:"411001"}}})
       
