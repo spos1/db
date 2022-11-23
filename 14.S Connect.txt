@@ -1,0 +1,60 @@
+STEP-1
+Install the 'Mysql.connector' package on the linux machine if it is not already installed. To do so enter the following command into the linux terminal:
+
+$> pip install mysql.connector-python
+
+STEP-2
+To remove the default Mysql password and to revoke all the privileges, perform the following steps:
+
+Open 'Mysql' from terminal: $> sudo mysql -u root or $> sudo mysql -u root -p
+Update user set plugin='mysql_native_password' where user='root';
+FLUSH privileges;
+After performing the above steps, all the privileges and password should be removed from the Mysql.
+
+STEP-3
+Open a new python file and start writing the cursor commands.
+
+
+import mysql.connector
+
+mydb = mysql.connector.connect(host='localhost', user='root', database='database_name')
+
+mycursor = mydb.cursor()
+
+sql_command_creation = "CREATE TABLE student(rollno INT, stud_name VARCHAR(20), s_marks INT)"
+mycursor.execute(sql_command_creation)
+mydb.commit()
+print("Table Created!")
+
+sql_command_insert = "INSERT INTO student VALUES(1,'Sahil',99)"
+mycursor.execute(sql_command_insert)
+mydb.commit()
+print("Record Inserted!")
+
+sql_command_display = "SELECT * FROM student"
+mycursor.execute(sql_command_display)
+mydb.commit()
+print("Inserted Records are:")
+print(mycursor.fetchall)
+
+sql_command_update = "UPDATE student SET student.s_marks=9 WHERE student.stud_name='Sahil'"
+mycursor.execute(sql_command_update)
+mydb.commit()
+print("Record Updated!")
+
+sql_command_display = "SELECT * FROM student"
+mycursor.execute(sql_command_display)
+mydb.commit()
+print("Updated Records are:")
+print(mycursor.fetchall)
+
+sql_command_delete = "DELETE FROM student WHERE student.rollno=1"
+mycursor.execute(sql_command_delete)
+mydb.commit()
+print("Record Deleted!")
+
+sql_command_display = "SELECT * FROM student"
+mycursor.execute(sql_command_display)
+mydb.commit()
+print("Records are:")
+print(mycursor.fetchall)

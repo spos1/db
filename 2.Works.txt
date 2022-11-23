@@ -1,0 +1,90 @@
+# CREATING TABLE ON THE SELECTED DATABASE
+
+CREATE TABLE Employee(employee_name VARCHAR(20), street VARCHAR(20), city VARCHAR(20), PRIMARY KEY (employee_name));
+CREATE TABLE Works(employee_name VARCHAR(20), company_name VARCHAR(30), salary INT NOT NULL, FOREIGN KEY (employee_name) REFERENCES Employee(employee_name));
+CREATE TABLE Company(comapny_name VARCHAR(30), city VARCHAR(20));
+CREATE TABLE Manages(employee_name VARCHAR(20), manager_name VARCHAR(20) NOT NULL, FOREIGN KEY (employee_name) REFERENCES Employee(employee_name));
+
+
+-- Employee(employee_name, street, city)      -> (var,var,var)
+-- Works(employee_name, company_name, salary) -> (var,var,int)
+-- Company(company_name, city)                -> (var,var)
+-- Manages(employee_name, manager_name)       -> (var,var)
+
+
+# TEST-1 (Employee_name: Sam, Comapny_name: TCS, Salary: 12000)
+
+INSERT INTO Employee VALUES('Sam','Lane-1','Pune');
+INSERT INTO Works VALUES('Sam','TCS',12000);
+INSERT INTO Company VALUES('TCS','Pune');
+INSERT INTO Manages VALUES('Sam','Man-1');
+
+
+# Test-2 (Employee_name: Alan, Comapny_name: TCS, Salary: 19500)
+
+INSERT INTO Employee VALUES('Alan','Street-2','Goa');
+INSERT INTO Works VALUES('Alan','TCS',19500);
+INSERT INTO Company VALUES('TCS','Pune');
+INSERT INTO Manages VALUES('Alan','Man-1');
+
+# Test-3 (Employee_name: Max, Comapny_name: InfoSys, Salary: 10500)
+
+INSERT INTO Employee VALUES('Max','Street-9','Goa');
+INSERT INTO Works VALUES('Max','InfoSys',10500);
+INSERT INTO Company VALUES('InfoSys','Mumbai');
+INSERT INTO Manages VALUES('Max','Man-3');
+
+# Test-4 (Employee_name: Rohan, Comapny_name: InfoSys, Salary: 9500)
+
+INSERT INTO Employee VALUES('Rohan','Lane-5','Mumbai');
+INSERT INTO Works VALUES('Rohan','InfoSys',9500);
+INSERT INTO Company VALUES('InfoSys','Pune');
+INSERT INTO Manages VALUES('Rohan','Man-21');
+
+# Test-5 (Employee_name: Bill, Comapny_name: TechM, Salary: 7500)
+
+INSERT INTO Employee VALUES('Bill','Street-High','Pune');
+INSERT INTO Works VALUES('Bill','TechM',7500);
+INSERT INTO Company VALUES('TechM','Pune');
+INSERT INTO Manages VALUES('Bill','Man-4');
+
+
+Q1. Find the names of all employees who work for ‘TCS’.
+SELECT Works.employee_name FROM Works WHERE Works.company_name='TCS';
+
+
+Q2. Find the names and company names of all employees sorted in ascending order of company 
+name and descending order of employee names of that company.
+SELECT Works.employee_name, Works.company_name FROM Works ORDER BY Works.company_name ASC, Works.employee_name DESC;
+
+
+Q3. Change the city of employee working with InfoSys to ‘Bangalore’.
+# BEFORE
+SELECT Employee.employee_name, Employee.city FROM Employee;
+
+# QUERY
+UPDATE Employee SET Employee.city = 'Bangalore' WHERE Employee.employee_name IN (SELECT Works.employee_name FROM Works WHERE Works.company_name='InfoSys');
+
+# AFTER
+SELECT Employee.employee_name, Employee.city FROM Employee;
+
+
+Q4. Find the names of all employees who earn more than the average salary of all employees of their 
+company. Assume that all people work for at most one company.
+SELECT Works.employee_name, Works.company_name FROM Works WHERE employee_name
+IN (SELECT Works.employee_name FROM Works 
+WHERE Works.salary > (SELECT AVG(Works.salary) FROM Works));
+
+
+#Q5. Find the names, street address, and cities of residence for all employees who work for 'TechM' 
+and earn more than $10,000.
+SELECT Employee.employee_name, Employee.street, Employee.city FROM Employee
+WHERE Employee.employee_name IN (SELECT Works.employee_name FROM Works WHERE Works.company_name='TechM' AND Works.salary>10000);
+
+
+#Q6. Change name of table Manages to Management.
+ALTER TABLE Manages RENAME TO Management;
+
+
+#Q7. Add Column Asset to Company table.
+ALTER TABLE Company ADD Asset VARCHAR(20);

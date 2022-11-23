@@ -1,0 +1,100 @@
+# CREATING TABLE ON THE SELECTED DATABASE
+
+CREATE TABLE Account(Acc_no VARCHAR(10) NOT NULL, branch_name VARCHAR(20), balance INT, PRIMARY KEY (Acc_no));
+CREATE TABLE Branch(branch_name VARCHAR(10) NOT NULL, branch_city VARCHAR(10), assets VARCHAR(10));
+CREATE TABLE Customer(cust_name VARCHAR(10) NOT NULL, cust_street VARCHAR(15), cust_city VARCHAR(10), PRIMARY KEY (cust_name));
+CREATE TABLE Depositor(cust_name VARCHAR(10) NOT NULL, acc_no VARCHAR(20), FOREIGN KEY (cust_name) REFERENCES Customer(cust_name));
+CREATE TABLE Loan(loan_no VARCHAR(20), branch_name VARCHAR(10) NOT NULL, amount INT, PRIMARY KEY (loan_no));
+CREATE TABLE Borrower(cust_name VARCHAR(20) NOT NULL, loan_no VARCHAR(20) NOT NULL, FOREIGN KEY (cust_name) REFERENCES Customer(cust_name), FOREIGN KEY (loan_no) REFERENCES Loan(loan_no));
+
+
+--Account(Acc_no, branch_name,balance)      -> (var, var, int)
+--Branch(branch_name,branch_city,assets)    -> (var, var, var)
+--Customer(cust_name,cust_street,cust_city) -> (var, var, var)
+--Depositor(cust_name,acc_no)               -> (var, var)
+--Loan(loan_no,branch_name,amount)          -> (var, var, int)
+--Borrower(cust_name,loan_no)               -> (var, var)
+
+
+# (Customer 1: Sam, Account no: 1, Loan no: L1)
+INSERT INTO Account VALUES('1','Akurdi',250);
+INSERT INTO Branch VALUES('Akurdi','Pune','Gold');
+INSERT INTO Customer VALUES('Sam','Lane-1','Pune');
+INSERT INTO Depositor VALUES('Sam','1');
+INSERT INTO Loan VALUES('L1','Akurdi',500);
+INSERT INTO Borrower VALUES('Sam','L1');
+
+
+# (Customer 2: Ron, Account no: 2, Loan no: L2)
+INSERT INTO Account VALUES('2','Akurdi',750);
+INSERT INTO Branch VALUES('Akurdi','Pune','Diamond');
+INSERT INTO Customer VALUES('Ron','Road-1','Pune');
+INSERT INTO Depositor VALUES('Ron','2');
+INSERT INTO Loan VALUES('L2','Akurdi',1500);
+INSERT INTO Borrower VALUES('Ron','L2');
+
+
+# (Customer 3: Nilesh, Account no: 3, Loan no: L3)
+INSERT INTO Account VALUES('3','Baner',1250);
+INSERT INTO Branch VALUES('Baner','Pune','Car');
+INSERT INTO Customer VALUES('Nilesh','Road-C2','Pune');
+INSERT INTO Depositor VALUES('Nilesh','3');
+INSERT INTO Loan VALUES('L3','Baner',1750);
+INSERT INTO Borrower VALUES('Nilesh','L3');
+
+
+# (Customer 4: Rohan, Account no: 4, Loan no: L4)
+INSERT INTO Account VALUES('4','Baner',900);
+INSERT INTO Branch VALUES('Baner','Pune','Van');
+INSERT INTO Customer VALUES('Rohan','Street-P2','Mumbai');
+INSERT INTO Depositor VALUES('Rohan','4');
+INSERT INTO Loan VALUES('L4','Baner',2000);
+INSERT INTO Borrower VALUES('Rohan','L4');
+
+
+# (Customer 5: Alan, Account no: 5, Loan no: L5)
+INSERT INTO Account VALUES('5','Akurdi',19000);
+INSERT INTO Branch VALUES('Akurdi','Pune','Bike');
+INSERT INTO Customer VALUES('Alan','Street-P6','Pune');
+INSERT INTO Depositor VALUES('Alan','5');
+INSERT INTO Loan VALUES('L5','Akurdi',22000);
+INSERT INTO Borrower VALUES('Alan','L5');
+
+# Q1. Find the names of all branches in loan relation.
+SELECT Branch_name FROM Loan;
+
+
+# Q2. Find all loan numbers for loans made at Akurdi Branch with loan amount > 12000.
+SELECT loan_no FROM Loan WHERE branch_name='Akurdi' AND amount>12000;
+
+
+# Q3. Find all customers who have a loan from bank. Find their names,loan_no and loan amount.
+SELECT Borrower.cust_name, Borrower.loan_no, Loan.amount FROM Loan INNER JOIN Borrower ON Loan.loan_no = Borrower.loan_no;
+
+
+# Q4. List all customers in alphabetical order who have loan from Akurdi branch.
+SELECT Borrower.cust_name FROM Borrower WHERE Borrower.loan_no IN (SELECT Loan.loan_no FROM Loan WHERE branch_name='Akurdi') ORDER BY Borrower.cust_name;
+
+
+# Q5. Find all customers who have both account and loan at bank.
+SELECT Depositor.cust_name FROM Depositor INNER JOIN Borrower ON Depositor.cust_name = Borrower.cust_name;
+
+
+# Q6. Find the average account balance at each branch.
+SELECT branch_name, AVG(balance) FROM Account GROUP BY Account.branch_name;
+
+
+# Q7. Find number of depositors at each branch.
+SELECT Account.branch_name, COUNT(Account.Acc_no) FROM Account INNER JOIN Depositor ON Depositor.acc_no = Account.Acc_no GROUP BY Account.branch_name;
+
+
+# Q8. Calculate total loan amount given by bank.
+SELECT SUM(Loan.amount) FROM Loan WHERE Loan.branch_name='Baner';
+
+
+# Q9. Find name of Customer and city where customer name starts with Letter P.
+SELECT Customer.cust_name, Customer.cust_city FROM Customer WHERE Customer.cust_name LIKE 'P%';
+
+
+# Q10. Display distinct cities of branch.
+SELECT DISTINCT(Account.branch_name) FROM Account;
