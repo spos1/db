@@ -1,0 +1,72 @@
+STEP-1
+Open 'Mongo' from Linux Terminal using:
+$> mongo
+
+STEP-2
+Select or Create a database.
+
+$> use DATABASE_NAME
+Note: If the database does not exists, a new database with that name will be created.
+
+STEP-3
+After selecting a database create a Collection with any appropriate name.
+
+$> db.createCollection("COLLECTION_NAME")
+$OUTPUT> {"ok":1}
+
+STEP-4
+Once a collection is created, insert one or many values into it by using:
+
+$> db.COLLECTION_NAME.insertOne(COLUMN_NAME:"VALUE")
+
+EXAMPLE:
+$> db.student.insertOne(roll_no:1, name:"Sahil", department:"Computer", division:"SS")
+OR
+$> db.student.insertMany([{roll_no:1, name:"Sahil", department:"Computer", division:"SS"},
+{roll_no:2, name:"Ron", department:"Computer", division:"A"},
+{roll_no:3, name:"Kat", department:"Computer", division:"B"}])
+
+STEP-5
+Exit the MongoDB.
+Enter the following command in Linux Shell to install the pymongo package:
+$> pip install pymongo
+
+STEP-6
+Create a new python file and enter the connectivity commands.
+
+
+import pymongo
+
+myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+mydb = myclient["DATABASE_NAME"]
+print(mydb.list_collection_names())
+print('Code is working')
+collist = mydb.list_collection_names()
+
+if "COLLECTION_NAME" in collist:
+print("The collection exists.")
+
+mycol = mydb["COLLECTION_NAME"]
+
+x = mycol.find()
+print(x)
+
+
+to_insert = {roll_no:4, name:"Mike", department:"Computer", division:"SS"}
+executing_1 = mydb.COLLECTION_NAME.insert(to_insert)
+print("Collection after inserting is:")
+for i in mydb.COLLECTION_NAME.find():
+print(i)
+
+
+to_update = {name:"Mike"}
+executing_2 = mydb.COLLECTION_NAME.update(to_update,{$set:{department:"Mechanical"})
+print("Colleciton after updating:")
+for j in mydb.COLLECTION_NAME.find():
+print(j)
+
+
+to_del = {name:"Mike"}
+executing_3 = mydb.COLLECTION_NAME.remove(to_del)
+for k in mydb.COLLECTION_NAME.find():
+print(k)
