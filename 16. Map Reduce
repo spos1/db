@@ -67,6 +67,31 @@ db.employee.aggregate([{$group:{_id:'$Company',T_Salary:{$sum:'$Salary'}}}])
 
 #Q3. Return the Avg Salary of Company whose address is “Pune".
 
+//sum
+db.mapr.mapReduce(function() {emit (this.name,this.salary);},
+function(key,values) {return Array.sum(values)},
+{query:{name:'op'}, out:'resullts1'})
+db.resullts1.find()
+
+
+//avg
+db.mapr.mapReduce(function() {emit (this.name,this.salary);},
+function(key,values) {return Array.avg(values)},
+{query:{name:'op'}, out:'resullts2'})
+db.resullts2.find()
+
+
+
+// count
+db.mapr.mapReduce(function() {emit (1,1);},
+function(key,values) {return Array.sum(values)},
+{query:{name:'op'}, out:'result3'})
+db.result3.find()
+
+db.mapr.mapReduce(function() {emit (1,1);},
+function(key,values) {return Array.sum(values)},
+{query:{salary:{"$gt":12000}}, out:'result4'})
+db.result4.find()
 
 
 #Q4. Return total count for “State=AP”
