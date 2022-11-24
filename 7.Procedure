@@ -27,3 +27,56 @@ BEGIN
     dbms_output.put_line('Student Grade is: '||Grade);
 END;
 /
+
+
+
+
+create table stud_marks(roll_no number(3), name varchar2(20), marks 
+
+number(5));
+
+create table result(roll_no number(3), name varchar2(20), class 
+
+varchar2(20));
+
+create procedure Proc_Grade1(roll_no number, name varchar2, marks number) 
+
+as 
+
+class varchar2(20); 
+
+begin 
+
+if(marks<=1500 and marks>=990) then 
+
+class:='Distinction'; 
+
+elsif(marks<=989 and marks>=900) then 
+
+class:='First Class'; 
+
+elsif(marks<=899 and marks>=825) then 
+
+class:='Higher Second Class'; 
+
+else 
+
+class:='Pass'; 
+
+end if; 
+
+insert into stud_marks values(roll_no, name, marks); 
+
+insert into result values(roll_no,name, class); 
+
+end; 
+
+/
+
+exec Proc_Grade1(101, 'Malan', 1400);
+
+exec Proc_Grade1(102, 'Sameer', 980);
+
+select * from stud_marks;
+
+select * from result;
